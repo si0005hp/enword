@@ -4,9 +4,9 @@ document.addEventListener('keydown', function (e) {
     if (!window.confirm(`Register "${word}" ?`)) return;
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://master:8000/word');
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState>3 && xhr.status==200) { alert(xhr.responseText); }
+    xhr.open('POST', 'https://localhost:8000/word');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState > 3 && xhr.status == 200) { alert(xhr.responseText); }
     };
     xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -14,3 +14,4 @@ document.addEventListener('keydown', function (e) {
     return xhr;
   }
 });
+alert('ok');

@@ -2,3 +2,4 @@ node_modules/
 words.list
 *.cert
 *.key
+*.log

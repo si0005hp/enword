@@ -26,14 +26,16 @@ app.post('/word', (req, res) => {
       res.json({ status: "fail", message: err.message })
     } else {
       res.json({ status: "ok", message: line })
+      console.log(line)
     }
   })
 })
 
-https.createServer({
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-}, app)
-.listen(8000, function () {
-  console.log('enword server up on port 8000...')
-})
+https
+  .createServer({
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+  }, app)
+  .listen(8000, function () {
+    console.log('enword server up on port 8000...')
+  })
