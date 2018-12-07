@@ -4,6 +4,7 @@ var app = express()
 var bodyParser = require('body-parser')
 var fs = require('fs')
 var os = require("os")
+var https = require("https")
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -29,6 +30,10 @@ app.post('/word', (req, res) => {
   })
 })
 
-app.listen(8000, function () {
-  console.log('enword server up...')
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+.listen(8000, function () {
+  console.log('enword server up on port 8000...')
 })
