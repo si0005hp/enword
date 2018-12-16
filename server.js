@@ -5,11 +5,20 @@ var bodyParser = require('body-parser')
 var fs = require('fs')
 var os = require("os")
 var https = require("https")
+const readline = require('readline');
+
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+/* Load existing words */
+const words = []
+const reader = readline.createInterface({ input: fs.createReadStream(`${__dirname}/words.list`, 'utf8') })
+reader.on('line', line => words.push(line))
+reader.on('close', () => console.log(`Loaded existing ${words.length} words.`))
+
+/* API */
 app.get('/', function (req, res, next) {
   res.json({ status: "ok", message: "I'm running." })
 })
@@ -19,8 +28,13 @@ app.post('/word', (req, res) => {
     res.json({ status: "fail", message: 'Empry word passed.' })
     return
   }
+  const line = req.body.word
+  if (words.indexOf(line) >= 0) {
+    res.json({ status: "fail", message: `Ignore ${line} as exist already.` })
+    return
+  }
 
-  const line = `${req.body.word}:${req.body.definition}`
+  // Append to file
   fs.appendFile(`${__dirname}/words.list`, line + os.EOL, function (err) {
     if (err) {
       res.json({ status: "fail", message: err.message })
@@ -29,6 +43,8 @@ app.post('/word', (req, res) => {
       console.log(line)
     }
   })
+  // Append to memory
+  words.push(line)
 })
 
 https
