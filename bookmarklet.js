@@ -1,6 +1,7 @@
 document.addEventListener('keydown', function (e) {
   if (e.key.toLowerCase() == 'q' && e.ctrlKey) {
-    const word = window.getSelection().toString().trim();
+    const word = window.getSelection().toString().trim().toLowerCase();
+    if (word.length === 0) return;
     if (!window.confirm(`Register "${word}" ?`)) return;
 
     var xhr = new XMLHttpRequest();
